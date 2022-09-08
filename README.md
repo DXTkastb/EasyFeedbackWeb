@@ -1,16 +1,10 @@
-# feedback_view
+# EasyFeedbackWebView
 
-FeedBack view
+FrontEnd App for viewing user feedback data.
 
-## Getting Started
+### Features
 
-This project is a starting point for a Flutter application.
+- Login/Signup feature for Vendor/Organisation.
+- Fetch feedback data from backend(Spring App, SQL database) and display.
+- Also implements Server Sent Events to display feedbacks from users in real time.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

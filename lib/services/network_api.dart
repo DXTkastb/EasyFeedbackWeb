@@ -73,8 +73,7 @@ class NetworkApi {
     try {
       client = SseClient.connect(Uri.parse(
           // "http://192.168.29.136:8080/vendor/sse?vendorID=$vendorID"
-      'url'
-      ));
+          'url'));
     } catch (e) {
       return const Stream.empty();
     }
