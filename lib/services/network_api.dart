@@ -14,8 +14,7 @@ class NetworkApi {
     http.Response response = await http
         .get(
           Uri.parse(
-            // 'http://192.168.29.136:8080/vendor/auth/$vendorid',
-            'url',
+            'http://192.168.29.136:8080/vendor/auth/$vendorid',
           ),
         )
         .onError((error, stackTrace) => http.Response("", 503));
@@ -30,9 +29,7 @@ class NetworkApi {
     Vendor vendor = Vendor(name, newID);
     Map<String, dynamic> map = {"vendorName": name, "vendorID": newID};
     var response = await http
-        .post(Uri.parse(
-                // "http://192.168.29.136:8080/vendor/createvendor"
-                'url'),
+        .post(Uri.parse("http://192.168.29.136:8080/vendor/createvendor"),
             headers: {
               "Content-type": "application/json",
             },
@@ -54,9 +51,10 @@ class NetworkApi {
   static Future<List<FeedbackData>> getFeedbackData(
       int numberOfOrders, int vendorid) async {
     List<FeedbackData> list = [];
-    var response = await http.get(Uri.parse(
-        // "http://192.168.29.136:8080/vendor/$vendorid/db?numRecords=$numberOfOrders"
-        'url')).onError((error, stackTrace) => http.Response("", 404));
+    var response = await http
+        .get(Uri.parse(
+            "http://192.168.29.136:8080/vendor/$vendorid/db?numRecords=$numberOfOrders"))
+        .onError((error, stackTrace) => http.Response("", 404));
 
     if (response.statusCode != 200) {
       return List<FeedbackData>.empty();
@@ -72,9 +70,7 @@ class NetworkApi {
     SseClient? client;
     try {
       client = SseClient.connect(Uri.parse(
-          // "http://192.168.29.136:8080/vendor/sse?vendorID=$vendorID"
-      'url'
-      ));
+          "http://192.168.29.136:8080/vendor/sse?vendorID=$vendorID"));
     } catch (e) {
       return const Stream.empty();
     }
