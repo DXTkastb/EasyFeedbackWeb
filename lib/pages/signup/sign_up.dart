@@ -1,6 +1,7 @@
 import 'package:feedback_view/services/network_api.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated('old version')
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
   @override
@@ -109,9 +110,9 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     if (signing == null) {
-      return Column(
+      return const Column(
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           Text(
             "PLEASE DO NOT CLOSE THIS WINDOW.\nYOUR VENDOR-ID WILL BE GENERATED SOON!",
             style: TextStyle(
