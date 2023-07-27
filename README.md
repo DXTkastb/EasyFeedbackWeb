@@ -10,5 +10,6 @@ FrontEnd App for viewing user feedback data.
 
 #### Screenshots
 
-![screen1](https://user-images.githubusercontent.com/38028330/189538771-5c02635b-181f-4247-91da-b6e574e8c895.jpg)
-![screen2](https://user-images.githubusercontent.com/38028330/189538774-46073633-87ca-4a7a-83dd-5842fdda558d.jpg)
+![Screenshot from 2023-07-28 01-38-09](https://github.com/DXTkastb/EasyFeedbackWeb/assets/38028330/63996ee8-f731-4148-9ac4-572cb87d96a0)
+![Screenshot from 2023-07-28 02-26-34](https://github.com/DXTkastb/EasyFeedbackWeb/assets/38028330/4057a9af-7988-4f9e-bd76-7457b4f0e925)
+
