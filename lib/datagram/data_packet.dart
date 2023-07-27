@@ -1,87 +1,107 @@
-import 'package:feedback_view/data/feedbackdata.dart' hide TextSpan;
+import 'package:feedback_view/custom_widgets/feedbackbox.dart';
+import 'package:feedback_view/custom_widgets/rater_widget.dart';
+import 'package:feedback_view/data/newfeedbackdata.dart';
 import 'package:flutter/material.dart';
 
 class DataPacket extends StatelessWidget {
-  final FeedbackData feedbackData;
+  final NewFeedbackData feedbackData;
 
   const DataPacket({Key? key, required this.feedbackData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var normalizedScore = (5) * ((feedbackData.sentimentScore! + 1) / 2);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.blueGrey.shade100,
-            border: const Border(
-                left: BorderSide(width: 6, color: Colors.blueGrey)),
-          ),
-          padding: const EdgeInsets.only(left: 8, bottom: 10, top: 8, right: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Text.rich(
-                    TextSpan(
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text: "ORDER-NUMBER :  ",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Color.fromRGBO(55, 71, 79, 1)),
-                        ),
+    var normalizedScore = (5) * ((feedbackData.score + 1) / 2);
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,),
+      margin: const EdgeInsets.only(bottom: 25, left: 10, right: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        //  mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding:
+                const EdgeInsets.only(left: 8, bottom: 10, top: 8, right: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: const Color.fromRGBO(155, 212, 252, 1.0),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Text.rich(
                         TextSpan(
-                          text: "${feedbackData.num}${feedbackData.time}",
-                          style: const TextStyle(
-                              decoration: TextDecoration.underline,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w900),
+                          children: <TextSpan>[
+                            const TextSpan(
+                              text: "feedback-id :  ",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromRGBO(55, 71, 79, 1)),
+                            ),
+                            TextSpan(
+                              text: "${feedbackData.feedback_id}",
+                              style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ],
                         ),
-                      ],
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const Expanded(
-                    child: SizedBox(),
-                  ),
-                  Text("Rating: $normalizedScore/5"),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Icon(
-                    (normalizedScore < 2.5)
-                        ? Icons.thumb_down_alt_sharp
-                        : Icons.thumb_up_alt_sharp,
-                    color: (normalizedScore >= 2.5)
-                        ? Colors.green
-                        : Colors.redAccent,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              Text(
-                feedbackData.feedback,
-                style: const TextStyle(
-                    color: Color.fromRGBO(55, 71, 79, 1),
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900),
-              )
-            ],
+                    const Expanded(
+                      child: SizedBox(),
+                    ),
+                    RaterWidget(score: feedbackData.score),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  feedbackData.feedback,
+                  style: const TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 1.0),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900),
+                )
+              ],
+            ),
           ),
-        ),
-        ...feedbackData.sentences!.map((e) {
-          return SentenceWidget(
-              sentence: e.text.content, positive: (e.sentiment.score >= 0));
-        }).toList(),
-      ],
+          const SizedBox(
+            height: 5,
+          ),
+          (feedbackData.positiveSentences.isNotEmpty)
+              ? FeedBackBox(
+                  type: 1,
+                  list: feedbackData.positiveSentences,
+                )
+              : const SizedBox(),
+          (feedbackData.neutralSentences.isNotEmpty)
+              ? FeedBackBox(
+                  type: 0,
+                  list: feedbackData.neutralSentences,
+                )
+              : const SizedBox(),
+          (feedbackData.negativeSentences.isNotEmpty)
+              ? FeedBackBox(
+                  type: -1,
+                  list: feedbackData.negativeSentences,
+                )
+              : const SizedBox(),
+        ],
+      ),
     );
   }
 }
@@ -97,18 +117,12 @@ class SentenceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.all(10),
       alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(
-        color: (positive) ? Colors.green.shade100 : Colors.red.shade100,
-        border: Border(
-            left: BorderSide(
-                width: 6, color: (positive) ? Colors.green : Colors.redAccent)),
-      ),
-      padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5, right: 8),
-      child: Text(
-        sentence,
-        style: const TextStyle(fontSize: 15.3),
-      ),
+      color: (positive)
+          ? const Color.fromRGBO(183, 255, 219, 1.0)
+          : const Color.fromRGBO(255, 204, 220, 1.0),
+      child: Text(sentence),
     );
   }
 }

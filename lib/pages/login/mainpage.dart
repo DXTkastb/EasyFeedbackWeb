@@ -1,12 +1,12 @@
-import '/pages/adminpage/adminpage.dart';
-import '../../custom_widgets/customFloatingButton.dart';
-import 'login_box.dart';
-import '/provider_dict/data_change.dart';
-import '/services/network_api.dart';
-import '../../data/userdata.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '/pages/adminpage/adminpage.dart';
+import '../../providers/data_change.dart';
+import '/services/network_api.dart';
+import '../../data/userdata.dart';
+import 'login_box.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -89,48 +89,41 @@ class MainPageState extends State<MainPage> {
       );
     }
 
-    return ChangeNotifierProvider(
-      create: (BuildContext changeNotifierProvider) {
-        return DataChange();
-      },
-      builder: (builderContext, child) {
-        return Scaffold(
-          backgroundColor: Colors.grey.shade300,
-          floatingActionButton: (userLoggedIn!) ? const CustomFloatingButton() : null,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text("Feedback $vendorName"),
-            actions: (userLoggedIn!)
-                ? [
-                    ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            userLoggedIn = null;
-                            vendorName = '';
-                          });
-                          var pref = await SharedPreferences.getInstance();
-                          await pref.remove("vendorID");
-                          // await Future.delayed(const Duration(seconds: 0));
-                          if (mounted) {
-                            setState(() {
-                              userLoggedIn = false;
-                            });
-                          }
-                        },
-                        child: const Text("LOGOUT"))
-                  ]
-                : null,
-          ),
-          body: Center(
-            child: (!userLoggedIn!)
-                ? SizedBox(
-                    width: 320, height: 200, child: Login(loginFunction: login))
-                : AdminPage(
-                    vendorID: vendorId,
-                  ),
-          ),
-        );
-      },
+    return Scaffold(
+      backgroundColor: Colors.grey.shade300,
+      //  floatingActionButton: (userLoggedIn!) ? const CustomFloatingButton() : null,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Feedback $vendorName"),
+        actions: (userLoggedIn!)
+            ? [
+          ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        userLoggedIn = null;
+                        vendorName = '';
+                      });
+                      //   NetworkApi.closeSseClient();
+                      var pref = await SharedPreferences.getInstance();
+                      await pref.remove("vendorID");
+                      // await Future.delayed(const Duration(seconds: 0));
+                      if (mounted) {
+                        setState(() {
+                          userLoggedIn = false;
+                        });
+                      }
+                    },
+                    child: const Text("LOGOUT"))
+              ]
+            : null,
+      ),
+      body: Center(
+        child: (!userLoggedIn!)
+            ? SizedBox(
+                width: 320, height: 200, child: Login(loginFunction: login))
+            : AdminPage(
+              ),
+      ),
     );
   }
 }

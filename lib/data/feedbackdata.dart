@@ -6,18 +6,46 @@ class FeedbackData {
   String _feedback; // y
   int _vendorID;
   int _isInaccurate;
-  List<Sentence>? _sentences; // y
+  List<Sentence> _positiveSentences;
+  List<Sentence> _neutralSentences;
+  List<Sentence> _negativeSentences;
 
-  FeedbackData(this._num, this._time, this._sentimentScore, this._category,
-      this._feedback, this._vendorID, this._isInaccurate, this._sentences);
+  FeedbackData(
+      this._num,
+      this._time,
+      this._sentimentScore,
+      this._category,
+      this._feedback,
+      this._vendorID,
+      this._isInaccurate,
+      this._negativeSentences,
+      this._neutralSentences,
+      this._positiveSentences);
 
   factory FeedbackData.fromJson(dynamic json) {
-    List<dynamic> list = json["sentences"];
-    List<Sentence> sentenceList = [];
-    for (var element in list) {
+    List<dynamic> negatives = json["negativeSentences"];
+    List<dynamic> positives = json["positiveSentences"];
+    List<dynamic> neutrals = json["neutralSentences"];
+
+    List<Sentence> positiveList = [];
+    List<Sentence> negativeList = [];
+    List<Sentence> neutralList = [];
+
+    for (var element in negatives) {
       Sentence newSentence = Sentence.fromjson(element);
-      sentenceList.add(newSentence);
+      negativeList.add(newSentence);
     }
+
+    for (var element in positives) {
+      Sentence newSentence = Sentence.fromjson(element);
+      positiveList.add(newSentence);
+    }
+
+    for (var element in neutrals) {
+      Sentence newSentence = Sentence.fromjson(element);
+      neutralList.add(newSentence);
+    }
+
     return FeedbackData(
         json["num"],
         json["time"],
@@ -26,14 +54,12 @@ class FeedbackData {
         json["feedback"],
         json["vendorID"],
         json["isInaccurate"],
-        sentenceList);
+        neutralList,
+        neutralList,
+        positiveList);
   }
 
-  List<Sentence>? get sentences => _sentences;
-
-  set sentences(List<Sentence>? value) {
-    _sentences = value;
-  }
+  List<Sentence> get positiveSentences => _positiveSentences;
 
   int get isInaccurate => _isInaccurate;
 
@@ -81,6 +107,10 @@ class FeedbackData {
   String toString() {
     return "${_num} : ${_time}" + _feedback;
   }
+
+  List<Sentence> get neutralSentences => _neutralSentences;
+
+  List<Sentence> get negativeSentences => _negativeSentences;
 }
 
 class Sentence {

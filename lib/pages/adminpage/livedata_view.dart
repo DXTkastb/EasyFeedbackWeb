@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:feedback_view/data/feedbackdata.dart';
 import 'package:feedback_view/datagram/data_packet.dart';
-import 'package:feedback_view/services/network_api.dart';
+
 import 'package:flutter/material.dart';
 
+@Deprecated("No Live Support")
 class LiveDataView extends StatelessWidget {
   final int vendorID;
   List<FeedbackData> list = [];
@@ -33,7 +34,7 @@ class LiveDataView extends StatelessWidget {
         Expanded(
           child: StreamBuilder(
             initialData: "LOADING",
-            stream: NetworkApi.getRealSse(vendorID),
+           // stream: NetworkApi.getRealSse(vendorID),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if(snapshot.hasError || snapshot.connectionState==ConnectionState.done){
                 return const Text("Connection Interrupted Or Closed");
@@ -49,7 +50,8 @@ class LiveDataView extends StatelessWidget {
                 return ListView.builder(itemBuilder: (ctx, index) {
                   return Padding(
                       padding: const EdgeInsets.only(bottom: 35),
-                      child: DataPacket(feedbackData: list[index]));
+                  //    child: DataPacket(feedbackData: list[index])
+                  );
                 },itemCount: count,padding: const EdgeInsets.only(left: 50,right: 50),);
 
               }
