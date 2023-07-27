@@ -15,8 +15,8 @@ class NetworkApi {
   // static SseClient? sseClient;
 
   static Future<UserLoggedInData?> authUser(
-    int vendorid,
-  ) async {
+      int vendorid,
+      ) async {
     http.Response response = await http.get(
         Uri.parse(
           'http://localhost:8080/vendor/auth/$vendorid',
@@ -38,13 +38,13 @@ class NetworkApi {
     Map<String, dynamic> map = {"vendorName": name, "vendorID": newID};
     var response = await http
         .post(Uri.parse("http://localhost:8080/vendor/createvendor"),
-            headers: {
-              "Content-type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-              // Required for CORS support to work
-              "Access-Control-Allow-Headers": "*",
-            },
-            body: jsonEncode(map))
+        headers: {
+          "Content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          // Required for CORS support to work
+          "Access-Control-Allow-Headers": "*",
+        },
+        body: jsonEncode(map))
         .onError((error, stackTrace) {
       return http.Response("", 404);
     });
@@ -104,7 +104,7 @@ class NetworkApi {
   static Future<List<NewFeedbackData>> getData(int lastId) async {
     var token = StorageService.service.getKey();
     var response =
-        await http.get(Uri.parse('$fetchFeedbackUri$lastId'), headers: {
+    await http.get(Uri.parse('$fetchFeedbackUri$lastId'), headers: {
       'auth-token': token ?? '',
       "Access-Control-Allow-Origin": "*",
       // Required for CORS support to work
