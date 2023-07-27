@@ -67,7 +67,6 @@ class NetworkApi {
             "http://localhost:8080/vendor/$vendorid/db?numRecords=$numberOfOrders"),
         headers: {
           "Access-Control-Allow-Origin": "*",
-          // Required for CORS support to work
           "Access-Control-Allow-Headers": "*",
         }).onError((error, stackTrace) => http.Response("", 404));
 

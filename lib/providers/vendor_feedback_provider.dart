@@ -27,7 +27,7 @@ class VendorFeedbackProvider extends ChangeNotifier {
     List<NewFeedbackData> newData = await NetworkApi.getData(0);
     if(disposed) return;
     data = newData;
-    if(newData.length < 2) canLoadMore = false;
+    if(newData.length < 20) canLoadMore = false;
     reloading = false;
     notifyListeners();
   }
